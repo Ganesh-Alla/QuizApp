@@ -16,7 +16,7 @@ const Home = async() => {
       <PopLogOut/>
       <StartPage />
   </div>)
-  }else if(decrypt(session) !== "Logged"){
+  }else if(session && decrypt(session) !== "Logged"){
     return (
     <div className="w-full">
     <PopLogOut/>
