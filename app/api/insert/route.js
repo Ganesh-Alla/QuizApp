@@ -32,9 +32,11 @@ export async function POST(request) {
             regdNo,
             year,
             branch,
-            college
-        })
-
+            college,
+            session: {
+                deadline: null
+            }
+        });
      try {
             await newUser.save();
     } catch (error) {

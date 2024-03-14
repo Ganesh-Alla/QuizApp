@@ -1,11 +1,11 @@
-import { decrypt } from '@/utils/Decrypt';
+import { decrypt } from '@/utils/Cipher';
 import PageLayout from './PageLayout';
-import { getSession } from '@/app/api/route';
+import { getDeadline, getSession } from '@/app/api/route';
 
 const QuizApp = async() => {
-    const session = await getSession();
+    const deadline = await getDeadline();
       return (
-    <PageLayout session={decrypt(session)}/>
+    <PageLayout deadline={deadline}/>
       );
 };
 export default QuizApp;

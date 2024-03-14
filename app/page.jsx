@@ -1,22 +1,26 @@
 import BlueLinks from "@/components/BlueLinks"
-import PageRoute from "@/components/PageRoute"
-import { decrypt } from "@/utils/Decrypt"
-import { getSession } from '@/app/api/route'
+import { decrypt } from "@/utils/Cipher"
+import { getSession,getDeadline } from '@/app/api/route'
 import StartPage from "@/components/StartPage";
 import QuizApp from "@/components/QuizApp";
 import PopLogOut from "@/components/PopLogOut";
+import Register from "@/components/Register";
+import LoginCode from "@/components/LoginCode";
 
 const Home = async() => {
 
   const session =await  getSession();
+  const time = await getDeadline();
 
-  if(decrypt(session) === "Registered"){
+console.log(time);
+console.log(session);
+  if(session && !time && session !== "Logged"){
     return (
     <div className="w-full">
       <PopLogOut/>
-      <StartPage />
+      <StartPage/>
   </div>)
-  }else if(session && decrypt(session) !== "Logged"){
+  }else if(session && time && session !== "Logged"){
     return (
     <div className="w-full">
     <PopLogOut/>
@@ -27,7 +31,8 @@ const Home = async() => {
   return (
     <div className="w-full">
       <BlueLinks/>
-      <PageRoute />
+{session==="Logged" && <Register/>}
+{!session && <LoginCode/>}
     </div>
   )
 }

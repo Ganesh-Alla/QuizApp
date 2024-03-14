@@ -25,7 +25,6 @@ export async function POST(request) {
        }
 
       if(existingEmail._id.toString() === existingPhone._id.toString()){
-
           return NextResponse.json({message:"Success"},{status:201});
       }
       else{

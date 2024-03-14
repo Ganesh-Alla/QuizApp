@@ -85,7 +85,7 @@ const Register = () => {
         }
         const data = await response.json();
         if (response.ok) {
-             await login("Registered");
+             await login(email);
             console.log('Data Entered Successfull');
         } else {
             error(data.message);
@@ -108,8 +108,6 @@ const Register = () => {
         (option?.label ?? '').toLowerCase().includes(input.toLowerCase());
 
   return (
-
-
   <div className="flex flex-col items-center justify-center px-6 h-full py-0">
       <div className="w-full bg-white rounded-lg shadow dark:border mt-0 max-w-lg p-0 dark:bg-gray-800 dark:border-gray-700">
           <div className="space-y-6 p-8">

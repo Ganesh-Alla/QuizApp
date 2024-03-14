@@ -22,7 +22,7 @@ const { Header, Content, Sider } = Layout;
 //   };
 // });
 
-const PageLayout = ({session}) => {
+const PageLayout = ({deadline}) => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -30,8 +30,8 @@ const PageLayout = ({session}) => {
   const [time, setTime] = useState(false)
 
   useEffect(() => {
-    setTime(parseInt(session))
-  }, [session])
+    setTime(parseInt(deadline))
+  }, [deadline]);
 
   const onFinish = () => {
     alert("finished")
@@ -56,7 +56,7 @@ const PageLayout = ({session}) => {
           background: colorBgContainer,
         }}
       >
-        <Menu
+        {/* <Menu
           mode="inline"
           defaultSelectedKeys={['1']}
           defaultOpenKeys={['sub1']}
@@ -65,7 +65,7 @@ const PageLayout = ({session}) => {
             borderRight: 0,
           }}
           // items={items2}
-        />
+        /> */}
       </Sider>
       <Layout
         style={{

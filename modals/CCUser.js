@@ -1,40 +1,45 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const fruitSchema = new mongoose.Schema({
-    firstName:{
-        type:String,
-        required:[true,"No firstname specified"]
+const userSchema = new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: [true, "No firstname specified"]
     },
-    lastName:{
-        type:String,
-        required:[true,"No lastname specified"]
+    lastName: {
+        type: String,
+        required: [true, "No lastname specified"]
     },
-    email:{
-        type:String,
-        required:[true,"No email specified"]
+    email: {
+        type: String,
+        required: [true, "No email specified"]
     },
-    phone:{
-        type:String,
-        required:[true,"No phone specified"]
+    phone: {
+        type: String,
+        required: [true, "No phone specified"]
     },
-    branch:{
-        type:String,
-        required:[true,"No branch specified"]
+    branch: {
+        type: String,
+        required: [true, "No branch specified"]
     },
-    year:{
-        type:String,
-        required:[true,"No year specified"]
+    year: {
+        type: String,
+        required: [true, "No year specified"]
     },
-    college:{
-        type:String,
-        required:[true,"No college specified"]
+    college: {
+        type: String,
+        required: [true, "No college specified"]
     },
-    regdNo:{
-        type:String,
-        required:[true,"No regdno specified"]
+    regdNo: {
+        type: String,
+        required: [true, "No regdno specified"]
     },
-})
+    session: {
+        type: {
+            deadline: {
+                type: String,
+            }
+        },
+    }
+});
 
-export default mongoose.models.CCUser || mongoose.model("CCUser",fruitSchema)
-
-
+export default mongoose.models.CCUser || mongoose.model("CCUser", userSchema);
