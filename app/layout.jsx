@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
       {children}
       </main>
       <div className="md:hidden">
-        Plaase Open in Desktop
+        Please Open in Desktop
       </div>
 </body>
     </html>
