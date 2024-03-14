@@ -14,9 +14,12 @@ export default function RootLayout({ children }) {
     <header className="h-16">
       <NavBar/>
     </header>
-    <main className="flex-grow flex">
+    <main className="flex-grow md:flex hidden">
       {children}
       </main>
+      <div className="md:hidden">
+        Plaase Open in Desktop
+      </div>
 </body>
     </html>
   );
