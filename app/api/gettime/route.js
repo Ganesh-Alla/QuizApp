@@ -14,14 +14,14 @@ export async function GET() {
          return NextResponse.json({message:"User Not Exists please login"},{status:500});
         }
       let deadline = existingUser.session.deadline;
-      console.log("Session",deadline)
       if (!deadline) {
-          deadline = Date.now() + 1000 * 60 * 60;
+          deadline = Date.now() + 1000 * 60 ;
           existingUser.session.deadline =deadline;
           await existingUser.save();
         }
 
         await setDeadline(deadline.toString());
+
 
      return NextResponse.json({message:"Successed"},{status:201});
     } catch (error) {

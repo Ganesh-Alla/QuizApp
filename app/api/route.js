@@ -9,9 +9,9 @@ export async function login(code) {
 }
 
 
-export async function setDeadline(code) {
+export async function setDeadline(end) {
   const expires = new Date(Date.now() + 6 * 60 * 60 * 1000);
-  cookies().set('deadline',encrypt(code),{expires,httpOnly:true})
+  cookies().set('deadline',encrypt(end),{expires,httpOnly:true})
 }
 
 export async function logout() {
@@ -28,7 +28,6 @@ export async function logout() {
 
 export async function getDeadline() {
   const deadline =  cookies().get('deadline')?.value
-  console.log(decrypt(deadline))
   if(!deadline) return null
   return decrypt(deadline)
 }

@@ -37,7 +37,10 @@ const userSchema = new mongoose.Schema({
         type: {
             deadline: {
                 type: String,
-            }
+            },
+            starttime:{
+                type: String,
+            },
         },
     }
 });

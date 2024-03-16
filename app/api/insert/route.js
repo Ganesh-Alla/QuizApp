@@ -34,7 +34,7 @@ export async function POST(request) {
             branch,
             college,
             session: {
-                deadline: null
+                deadline: null,
             }
         });
      try {

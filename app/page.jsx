@@ -1,6 +1,5 @@
 import BlueLinks from "@/components/BlueLinks"
-import { decrypt } from "@/utils/Cipher"
-import { getSession,getDeadline } from '@/app/api/route'
+import { getSession,getDeadline, getStartTime } from '@/app/api/route'
 import StartPage from "@/components/StartPage";
 import QuizApp from "@/components/QuizApp";
 import PopLogOut from "@/components/PopLogOut";
@@ -10,21 +9,23 @@ import LoginCode from "@/components/LoginCode";
 const Home = async() => {
 
   const session =await  getSession();
-  const time = await getDeadline();
+  const deadline = await getDeadline();
+ console.log("session:",session)
+ console.log("deadline:",deadline)
 
-console.log(time);
-console.log(session);
-  if(session && !time && session !== "Logged"){
+
+
+  if(session && !deadline && session !== "Logged"){
     return (
     <div className="w-full">
       <PopLogOut/>
       <StartPage/>
   </div>)
-  }else if(session && time && session !== "Logged"){
+  }else if(session && deadline && session !== "Logged"){
     return (
     <div className="w-full">
     <PopLogOut/>
-    <QuizApp/>
+    <QuizApp deadline={deadline}/>
   </div>)
   }
 

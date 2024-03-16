@@ -19,6 +19,7 @@
     "next-auth": "^4.24.7",
     "node-rsa": "^1.1.1",
     "react": "^18",
+    "react-countdown": "^2.3.5",
     "react-dom": "^18",
     "react-tsparticles": "^2.12.2",
     "tsparticles-slim": "^2.12.0"
