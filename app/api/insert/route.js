@@ -1,5 +1,5 @@
 import CCUser from "@/modals/CCUser";
-import connectDB from "@/utils/db";
+import connectDB, { disconnectDB } from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -19,9 +19,15 @@ export async function POST(request) {
 
      const existingEmail = await CCUser.findOne({email});
      const existingPhone = await CCUser.findOne({phone});
+     const existingRegdNo = await CCUser.findOne({regdNo});
 
-     if(existingEmail || existingPhone){
-         return NextResponse.json({message:"User Already Exists"},{status:500});
+     if(existingEmail ){
+         return NextResponse.json({message:"Email Already Exists"},{status:500});
+        }
+        else if(existingPhone){
+            return NextResponse.json({message:"Phone Already Exists"},{status:500});
+        }else if(existingRegdNo){
+            return NextResponse.json({message:"RegdNo Already Exists"},{status:500});
         }
 
         const newUser = new CCUser({
@@ -35,10 +41,14 @@ export async function POST(request) {
             college,
             session: {
                 deadline: null,
-            }
+            },
+            result:null,
+            rating:0,
+            feedback:""
         });
      try {
             await newUser.save();
+            await disconnectDB();
     } catch (error) {
         console.log("DBE1",error);
         return NextResponse.json({message:"Creation Failed"},{status:500});

@@ -16,7 +16,7 @@ const PopLogOut = () => {
           cancelText: 'Cancel',
           async onOk(){
             await logout();
-            window.location.reload();
+            // window.location.reload();
           },
           okButtonProps:{
             type:"default",

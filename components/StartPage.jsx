@@ -1,6 +1,8 @@
 "use client"
 import React, { useState } from 'react'
 import { Button,Space,Drawer } from 'antd';
+import {  setValue } from '@/app/api/route';
+import { disconnectDB } from '@/utils/db';
 
 const StartPage = () => {
   const [open, setOpen] = useState(false);
@@ -12,13 +14,7 @@ const StartPage = () => {
       newLoadings[index] = true;
       return newLoadings;
     });
-    setTimeout(() => {
-      setLoadings((prevLoadings) => {
-        const newLoadings = [...prevLoadings];
-        newLoadings[index] = false;
-        return newLoadings;
-      });
-    }, 6000);
+
   };
 
   const showDrawer = () => {
@@ -27,7 +23,7 @@ const StartPage = () => {
   const onClose = () => {
     setOpen(false);
   };
-    const handleQuiz = async()=>{
+    const handleClick = async()=>{
       enterLoading(0)
       try {
         const response = await fetch('api/gettime',{
@@ -37,11 +33,18 @@ const StartPage = () => {
           },
       });
       const data = await response.json();
+      setTimeout(() => {
+        setLoadings((prevLoadings) => {
+          const newLoadings = [...prevLoadings];
+          newLoadings[0] = false;
+          return newLoadings;
+        });
+      }, 6000);
       if (response.ok) {
-          console.log('Deadline Set Successfully');
-          window.location.reload()
+          console.log("data",data);
+           await setValue("value");
       } else {
-          error(data.message);
+          console.error(data.message);
           console.log('Enter Failed');
       }
       console.log('Message from server:', data.message);
@@ -49,7 +52,6 @@ const StartPage = () => {
 
         console.error('Error:', error);
       }
-
     };
 
   return (
@@ -67,7 +69,7 @@ const StartPage = () => {
         extra={
           <Space>
             <Button onClick={onClose}>Cancel</Button>
-            <Button  type="primary" className='bg-[#0d47a1] text-white' loading={loadings[0]} onClick={handleQuiz}>
+            <Button  type="primary" className='bg-[#0d47a1] text-white' loading={loadings[0]} onClick={handleClick}>
               Agree and Continue
             </Button>
           </Space>

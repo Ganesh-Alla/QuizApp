@@ -48,7 +48,6 @@ const QuestionCard = ({
     ))}
   </Space>
 </Radio.Group>
-
                     </div>
                 </div>
 
@@ -74,7 +73,6 @@ const QuestionCard = ({
                             >
                             Submit
                             </button>
-
                 </div>
             </div>
         </div>

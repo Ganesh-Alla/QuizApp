@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import {UserOutlined, MailOutlined, PhoneOutlined } from '@ant-design/icons'
 import { login } from '@/app/api/route';
-
+import Swal from 'sweetalert2'
 import {
     Button,
     Form,
@@ -12,6 +12,7 @@ import {
     Divider,
     message
   } from 'antd';
+import { disconnectDB } from '@/utils/db';
 
 
 
@@ -85,8 +86,21 @@ const Register = () => {
         }
         const data = await response.json();
         if (response.ok) {
-             await login(email);
+          if(data.result){
+            Swal.fire({
+              title:'<strong>Heyy! Your Exam already COMPLETED. </strong>',
+              html: 'Results will be announce soon',
+              focusConfirm: false,
+              showCloseButton: true,
+              confirmButtonText:
+    ' Okay',
+              confirmButtonAriaLabel:
+                  'Thumbs up, great!',
+          })
+          }else{
+            await login(email);
             console.log('Data Entered Successfull');
+          }
         } else {
             error(data.message);
             console.log('Enter Failed');

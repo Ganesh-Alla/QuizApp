@@ -1,5 +1,5 @@
 import CCUser from "@/modals/CCUser";
-import connectDB from "@/utils/db";
+import connectDB, { disconnectDB } from "@/utils/db";
 import { NextResponse } from "next/server";
 
 export async function POST(request) {
@@ -14,18 +14,16 @@ export async function POST(request) {
      const existingEmail = await CCUser.findOne({email});
      const existingPhone = await CCUser.findOne({phone});
 
-     if(!existingEmail && existingPhone){
-         return NextResponse.json({message:"Incorect Email"},{status:500});
+      await disconnectDB();
+     if(!existingEmail){
+         return NextResponse.json({message:"No Email Found"},{status:500});
         }
-    else if(existingEmail && !existingPhone){
+    else if(!existingPhone){
         return NextResponse.json({message:"Incorect Phone"},{status:500});
-       }
-       else if(!existingEmail && !existingPhone){
-        return NextResponse.json({message:"No User Found"},{status:500});
        }
 
       if(existingEmail._id.toString() === existingPhone._id.toString()){
-          return NextResponse.json({message:"Success"},{status:201});
+          return NextResponse.json({message:"Success",result:existingEmail.result},{status:201});
       }
       else{
         return NextResponse.json({message:"Auth Failed"},{status:500});

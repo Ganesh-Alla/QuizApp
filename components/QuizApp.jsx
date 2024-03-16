@@ -1,6 +1,6 @@
 "use client"
 import React, {  useEffect, useRef, useState } from 'react';
-import { Layout,theme} from 'antd';
+import { Layout,theme,notification} from 'antd';
 import Count from './Count';
 import dynamic from 'next/dynamic';
 const QuestionCard = dynamic(() =>
@@ -8,14 +8,16 @@ const QuestionCard = dynamic(() =>
         ssr: false,
     });
 import questions from '@/utils/questionsData';
+import { setDeadline, setSubmit } from '@/app/api/route';
+import { disconnectDB } from '@/utils/db';
 
 const { Header, Content, Sider } = Layout;
 
-
-const QuizApp = ({deadline}) => {
+const QuizApp = () => {
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
 
   const [selectedAnswerID, setSelectedAnswerID] = useState(() => {
     if (typeof localStorage !== 'undefined') {
@@ -29,6 +31,16 @@ const QuizApp = ({deadline}) => {
   const [index,setIndex] = useState(0);
   const [QuestionsArray, setQuestionsArray] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [deadline, setdeadline] = useState(null);
+  const [loadings, setLoadings] = useState([]);
+  const enterLoading = (index) => {
+    setLoadings((prevLoadings) => {
+      const newLoadings = [...prevLoadings];
+      newLoadings[index] = true;
+      return newLoadings;
+    });
+
+  };
 
   function shuffleArray(array) {
     for (var i = array.length - 1; i > 0; i--) {
@@ -67,14 +79,50 @@ const QuizApp = ({deadline}) => {
   }, []);
 
 
+
   useEffect(() => {
     if (QuestionsArray && QuestionsArray.length > 0) {
       setCurrentQuestion(QuestionsArray[0]);
+
+      const fetchTime=async()=>{
+        enterLoading(0)
+        try {
+          const response = await fetch('api/gettime',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        setTimeout(() => {
+          setLoadings((prevLoadings) => {
+            const newLoadings = [...prevLoadings];
+            newLoadings[0] = false;
+            return newLoadings;
+          });
+        }, 6000);
+        if (response.ok) {
+            console.log("data",data);
+            setdeadline(data.deadline.toString())
+             await setDeadline(data.deadline.toString());
+        } else {
+            console.error(data.message);
+            console.log('Enter Failed');
+        }
+        console.log('Message from server:', data.message);
+        } catch (error) {
+          console.error('Error:', error);
+        }
+        finally{
+          disconnectDB();
+        }
+      }
+      fetchTime();
     }
   }, [QuestionsArray]);
+
   console.log("Questions",QuestionsArray)
   console.log("Current",currentQuestion)
-
 
   const handleAnswerOptionClick = (selectedAnswerID) => {
     localStorage.setItem(`question_${questions[currentQuestion].id}`, selectedAnswerID);
@@ -99,7 +147,7 @@ const handlePrevQuestion = () => {
   }
 };
 
-const handleScoreQuiz = () => {
+const handleScoreQuiz = async() => {
   let finalScore = 0;
   questions.forEach((question) => {
       const storedAnswer = localStorage.getItem(`question_${question.id}`);
@@ -108,9 +156,29 @@ const handleScoreQuiz = () => {
       }
   });
   setScore(finalScore);
+  try {
+    const response = await fetch('api/setresult',{
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        finalScore
+       }),
+  });
+  const data = await response.json();
+  if (response.ok) {
+    await setSubmit("Submit");
+} else {
+    console.error(data.message);
+    console.log('Enter Failed');
+}
+console.log('Message from server:', data.message);
+} catch (error) {
+
+  console.error('Error:', error);
+}
 };
-
-
 
   return (
     <Layout>
@@ -123,7 +191,7 @@ const handleScoreQuiz = () => {
       <div className='flex justify-between text-white w-full'>
       <div >QUIZ TIME</div>
       <div className='flex items-center'>
-      <Count time={deadline}  />
+    {deadline &&  <Count deadline={deadline} handleScoreQuiz={handleScoreQuiz} />}
         </div>
   </div>
     </Header>
@@ -150,7 +218,7 @@ const handleScoreQuiz = () => {
             borderRadius: borderRadiusLG,
           }}
         >
-                {  <QuestionCard
+                {QuestionsArray && questions[currentQuestion] && <QuestionCard
                     quizLength={questions.length}
                     question={questions[currentQuestion]}
                     index={index}
@@ -159,7 +227,8 @@ const handleScoreQuiz = () => {
                     handleNextQuestion={handleNextQuestion}
                     handlePrevQuestion={handlePrevQuestion}
                     handleScoreQuiz={handleScoreQuiz}
-                    />}
+                    />
+                }
         </Content>
       </Layout>
     </Layout>

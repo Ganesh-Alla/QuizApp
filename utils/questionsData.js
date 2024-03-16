@@ -117,7 +117,6 @@ const questions = [
 		correctResponse: 'd',
 		questionRationale: `The flux capacitor, which consists of a rectangular-shaped compartment with three flashing Geissler-style tubes arranged in a "Y" configuration, is described by Doc Brown as "what makes time travel possible."`,
 	},
-	
 ]
 
 export default questions;

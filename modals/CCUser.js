@@ -38,10 +38,16 @@ const userSchema = new mongoose.Schema({
             deadline: {
                 type: String,
             },
-            starttime:{
-                type: String,
-            },
         },
+    },
+    result:{
+        type:Number,
+    },
+    rating:{
+        type:Number
+    },
+    feedback:{
+        type:String,
     }
 });
 

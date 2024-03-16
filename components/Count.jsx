@@ -1,38 +1,52 @@
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2'
 
-const Count = ({time}) => {
-  const [timeLeft, setTimeLeft] = useState((time - Date.now())/1000); //time is in milliseconds
+const calculateTimeLeft = (deadline) => (deadline - Date.now()) / 1000;
+
+const CountdownTimer = ({ deadline,handleScoreQuiz }) => {
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline));
 
   useEffect(() => {
-    if (timeLeft > 0) {
-      let timer;
-      if (typeof window !== 'undefined') {
-          timer = setInterval(() => {
-          setTimeLeft((prevTime) => {
-            if (prevTime <= 1) {
-              clearInterval(timer);
-              return 0;
-            }
-            return prevTime - 1;
-          });
-        }, 1000);
+    if(timeLeft>0){
+    const timer = setInterval(() => {
+      const newTimeLeft = calculateTimeLeft(deadline);
+      if (newTimeLeft <= 0) {
+        clearInterval(timer);
+        setTimeLeft(0);
+        Swal.fire({
+          title:'<strong>Time`s Up! Exam Finished. </strong>',
+          html: 'Please Submit your Answers',
+          focusConfirm: false,
+          confirmButtonText:
+' Submit',
+          confirmButtonAriaLabel:
+              'Thumbs up, great!',
+      }).then(()=>{
+        handleScoreQuiz();
+      })
+      } else {
+        setTimeLeft(newTimeLeft);
       }
-      return () => clearInterval(timer);
-    }
-  }, [timeLeft]); // Depend on timeLeft to update and clear the timer accordingly
+    }, 1000);
 
-  const minutes = Math.floor(timeLeft / 60);
-  const seconds = Math.floor(timeLeft % 60);
+    return () => clearInterval(timer);}
+    else{
+      setTimeLeft(0);
+    }
+  }, [deadline,timeLeft,handleScoreQuiz]);
+
+  const formatTime = (time) => String(Math.floor(time)).padStart(2, '0');
+
+  const minutes = formatTime(timeLeft / 60);
+  const seconds = formatTime(timeLeft % 60);
 
   return (
-    <div>
-      <div className="mt-2 text-center">
-        <h2 className="text-lg font-semibold" suppressHydrationWarning>
-        {minutes < 10 ? `0${minutes}` : minutes} : {seconds < 10 ? `0${seconds}` : seconds}
-        </h2>
-      </div>
+    <div className="text-center mt-2">
+      <h2 className="text-lg font-semibold" suppressHydrationWarning>
+        {minutes} : {seconds}
+      </h2>
     </div>
   );
 };
 
-export default Count;
+export default CountdownTimer;
