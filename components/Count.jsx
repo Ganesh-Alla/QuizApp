@@ -3,7 +3,7 @@ import Swal from 'sweetalert2'
 
 const calculateTimeLeft = (deadline) => (deadline - Date.now()) / 1000;
 
-const CountdownTimer = ({ deadline,handleScoreQuiz }) => {
+const CountdownTimer = ({ deadline,handleScoreQuiz ,setLoading}) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline));
 
   useEffect(() => {
@@ -22,6 +22,7 @@ const CountdownTimer = ({ deadline,handleScoreQuiz }) => {
           confirmButtonAriaLabel:
               'Thumbs up, great!',
       }).then(()=>{
+        setLoading(true)
         handleScoreQuiz();
       })
       } else {
@@ -33,7 +34,7 @@ const CountdownTimer = ({ deadline,handleScoreQuiz }) => {
     else{
       setTimeLeft(0);
     }
-  }, [deadline,timeLeft,handleScoreQuiz]);
+  }, [deadline,timeLeft,handleScoreQuiz,setLoading]);
 
   const formatTime = (time) => String(Math.floor(time)).padStart(2, '0');
 

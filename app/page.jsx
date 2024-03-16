@@ -6,6 +6,7 @@ import PopLogOut from "@/components/PopLogOut";
 import Register from "@/components/Register";
 import LoginCode from "@/components/LoginCode";
 import Submit from "@/components/Submit";
+import Loading from "./loading";
 
 const Home = async() => {
 
@@ -17,7 +18,6 @@ const Home = async() => {
  console.log("value:",value)
  console.log("deadline:",deadline)
  console.log("timeleft:",Date.now()- deadline)
-
 
 if(isSubmit){
 return(

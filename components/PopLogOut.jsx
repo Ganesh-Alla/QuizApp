@@ -15,6 +15,7 @@ const PopLogOut = () => {
           okText: 'Confirm',
           cancelText: 'Cancel',
           async onOk(){
+            localStorage.clear();
             await logout();
             // window.location.reload();
           },

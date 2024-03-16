@@ -10,6 +10,7 @@ const QuestionCard = dynamic(() =>
 import questions from '@/utils/questionsData';
 import { setDeadline, setSubmit } from '@/app/api/route';
 import { disconnectDB } from '@/utils/db';
+import Loading from '@/app/loading';
 
 const { Header, Content, Sider } = Layout;
 
@@ -31,6 +32,7 @@ const QuizApp = () => {
   const [index,setIndex] = useState(0);
   const [QuestionsArray, setQuestionsArray] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [deadline, setdeadline] = useState(null);
   const [loadings, setLoadings] = useState([]);
   const enterLoading = (index) => {
@@ -179,6 +181,9 @@ console.log('Message from server:', data.message);
   console.error('Error:', error);
 }
 };
+if(loading){
+  return <Loading/>
+}
 
   return (
     <Layout>
@@ -191,7 +196,7 @@ console.log('Message from server:', data.message);
       <div className='flex justify-between text-white w-full'>
       <div >QUIZ TIME</div>
       <div className='flex items-center'>
-    {deadline &&  <Count deadline={deadline} handleScoreQuiz={handleScoreQuiz} />}
+    {deadline &&  <Count deadline={deadline} setLoading={setLoading} handleScoreQuiz={handleScoreQuiz} />}
         </div>
   </div>
     </Header>
