@@ -182,6 +182,7 @@ const handleScoreQuiz = useCallback(async () => {
     const data = await response.json();
     if (response.ok) {
       await setSubmit("Submit");
+      localStorage.clear()
     } else {
       console.error(data.message);
       console.log('Enter Failed');
