@@ -1,5 +1,5 @@
 "use client"
-import React, {  useEffect, useRef, useState } from 'react';
+import React, {  useCallback, useEffect, useRef, useState } from 'react';
 import { Layout,theme,notification} from 'antd';
 import Count from './Count';
 import dynamic from 'next/dynamic';
@@ -7,17 +7,35 @@ const QuestionCard = dynamic(() =>
     import('@/components/QuestionCard'), {
         ssr: false,
     });
-import questions from '@/utils/questionsData';
+import {Questions} from '@/utils/questionsData';
+
 import { setDeadline, setSubmit } from '@/app/api/route';
 import { disconnectDB } from '@/utils/db';
 import Loading from '@/app/loading';
+import Badge from './Badge';
 
 const { Header, Content, Sider } = Layout;
 
-const QuizApp = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+const QuizApp = ({year}) => {
+
+let questions;
+
+if(year == 3){
+  questions= Questions;
+}else{
+  questions = null
+}
+
+
+  const { token: { colorBgContainer, borderRadiusLG },} = theme.useToken();
+
+  const [index,setIndex] = useState(0);
+  const [QuestionsArray, setQuestionsArray] = useState(null);
+  const [currentQuestion, setCurrentQuestion] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [deadline, setdeadline] = useState(null);
+  const [tabShiftCount, setTabShiftCount] = useState(0);
+
 
 
   const [selectedAnswerID, setSelectedAnswerID] = useState(() => {
@@ -27,59 +45,47 @@ const QuizApp = () => {
     return null;
   });
 
-  const [score, setScore] = useState(0);
-
-  const [index,setIndex] = useState(0);
-  const [QuestionsArray, setQuestionsArray] = useState(null);
-  const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [deadline, setdeadline] = useState(null);
-  const [loadings, setLoadings] = useState([]);
-  const enterLoading = (index) => {
-    setLoadings((prevLoadings) => {
-      const newLoadings = [...prevLoadings];
-      newLoadings[index] = true;
-      return newLoadings;
-    });
-
-  };
-
-  function shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var temp = array[i];
-      array[i] = array[j];
-      array[j] = temp;
+  const getAnswersArray = () => {
+    if (typeof localStorage !== 'undefined') {
+      return JSON.parse(localStorage.getItem('answers')) || [];
     }
-    typeof window !== "undefined" && localStorage.setItem(`questions`,array);
-    return array;
+    return [];
   }
+  const answers = getAnswersArray();
 
-  const generateNumbersArray =()=>{
- var numbersArray = [];
-  for (var i = 0; i < questions.length; i++) {
-    numbersArray.push(i);
-  }
-  setQuestionsArray(numbersArray);
-  return numbersArray;
+  const [selected, setSelected] = useState(1);
 
-  }
+
 
 
   useEffect(() => {
+
+    function shuffleArray() {
+      var array = [];
+      for (var i = 0; i < questions.length; i++) {
+        array.push(i);
+      }
+      for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+      }
+      typeof window !== "undefined" && localStorage.setItem(`questions`,array);
+      return array;
+    }
 
       if (typeof localStorage !== 'undefined') {
       const storedQuestionsArray = localStorage.getItem('questions');
       if (storedQuestionsArray) {
         setQuestionsArray(JSON.parse(storedQuestionsArray));
       } else {
-        const shuffledArray = shuffleArray(generateNumbersArray());
+        const shuffledArray = shuffleArray();
         localStorage.setItem('questions', JSON.stringify(shuffledArray));
         console.log("second")
       }
     }
-  }, []);
-
+  }, [questions.length]);
 
 
   useEffect(() => {
@@ -87,7 +93,6 @@ const QuizApp = () => {
       setCurrentQuestion(QuestionsArray[0]);
 
       const fetchTime=async()=>{
-        enterLoading(0)
         try {
           const response = await fetch('api/gettime',{
             method: 'GET',
@@ -96,13 +101,6 @@ const QuizApp = () => {
             },
         });
         const data = await response.json();
-        setTimeout(() => {
-          setLoadings((prevLoadings) => {
-            const newLoadings = [...prevLoadings];
-            newLoadings[0] = false;
-            return newLoadings;
-          });
-        }, 6000);
         if (response.ok) {
             console.log("data",data);
             setdeadline(data.deadline.toString())
@@ -123,17 +121,21 @@ const QuizApp = () => {
     }
   }, [QuestionsArray]);
 
-  console.log("Questions",QuestionsArray)
+  console.log("answers",answers)
   console.log("Current",currentQuestion)
 
   const handleAnswerOptionClick = (selectedAnswerID) => {
     localStorage.setItem(`question_${questions[currentQuestion].id}`, selectedAnswerID);
+    answers.push(index+1);
+    console.log(index+1);
+    localStorage.setItem("answers",JSON.stringify(answers));
     setSelectedAnswerID(selectedAnswerID);
 };
 
 const handleNextQuestion = () => {
   if (index < questions.length-1) {
     setIndex(index+1);
+    setSelected(prevValue => prevValue + 1);
     const nextQuestion = QuestionsArray[index+1];
       setCurrentQuestion(nextQuestion);
       setSelectedAnswerID(localStorage.getItem(`question_${questions[nextQuestion].id}`) || null);
@@ -143,50 +145,82 @@ const handleNextQuestion = () => {
 const handlePrevQuestion = () => {
   if (index > 0) {
     setIndex(index-1);
+    setSelected(prevValue => prevValue - 1);
     const prevQuestion = QuestionsArray[index-1];
       setCurrentQuestion(prevQuestion);
       setSelectedAnswerID(localStorage.getItem(`question_${questions[prevQuestion].id}`) || null);
   }
 };
+const handleQuestion = (index) => {
+  if (index >= 0 && index <=questions.length -1) {
+    setIndex(index);
+    setSelected(index+1);
+    const prevQuestion = QuestionsArray[index];
+    setCurrentQuestion(prevQuestion);
+    setSelectedAnswerID(localStorage.getItem(`question_${questions[prevQuestion].id}`) || null);
+  }
+};
 
-const handleScoreQuiz = async() => {
+const handleScoreQuiz = useCallback(async () => {
   let finalScore = 0;
   questions.forEach((question) => {
-      const storedAnswer = localStorage.getItem(`question_${question.id}`);
-      if (storedAnswer === question.correctResponse) {
-          finalScore += 1;
-      }
+    const storedAnswer = localStorage.getItem(`question_${question.id}`);
+    if (storedAnswer === question.correctResponse) {
+      finalScore += 1;
+    }
   });
-  setScore(finalScore);
   try {
-    const response = await fetch('api/setresult',{
+    const response = await fetch('api/setresult', {
       method: 'POST',
       headers: {
-          'Content-Type': 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         finalScore
-       }),
-  });
-  const data = await response.json();
-  if (response.ok) {
-    await setSubmit("Submit");
-} else {
-    console.error(data.message);
-    console.log('Enter Failed');
-}
-console.log('Message from server:', data.message);
-} catch (error) {
+      }),
+    });
+    const data = await response.json();
+    if (response.ok) {
+      await setSubmit("Submit");
+    } else {
+      console.error(data.message);
+      console.log('Enter Failed');
+    }
+    console.log('Message from server:', data.message);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}, [questions]);
 
-  console.error('Error:', error);
-}
-};
+useEffect(() => {
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === 'hidden' && tabShiftCount < 3) {
+      if (tabShiftCount === 2) {
+        alert("Exam Finished due to tab shifts exceeding the limit");
+        handleScoreQuiz();
+      } else {
+        setTabShiftCount(prevCount => {
+          alert(`Don't Close the Tab(${prevCount + 1}/3)`);
+          console.log(prevCount + 1);
+          return prevCount + 1;
+        });
+      }
+    }
+  };
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+  return () => {
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+  };
+}, [tabShiftCount, handleScoreQuiz]);
+
+
 if(loading){
   return <Loading/>
 }
 
   return (
     <Layout>
+      <div className='fixed w-full top-14 z-50'>
     <Header
       style={{
         display: 'flex',
@@ -200,14 +234,22 @@ if(loading){
         </div>
   </div>
     </Header>
-    <Layout>
+    </div>
+    <Layout
+    style={{
+      marginTop:56
+    }}
+    >
       <Sider
-        width={200}
+        width={250}
         style={{
           background: colorBgContainer,
         }}
       >
-        Score:{score}
+        <div className='flex flex-wrap gap-1'>
+         {QuestionsArray && answers && QuestionsArray.map((num, index) => (
+       <Badge key={index} num={index+1} selected={selected} answers={answers} handleQuestion={handleQuestion}/>
+      ))}</div>
       </Sider>
       <Layout
         style={{

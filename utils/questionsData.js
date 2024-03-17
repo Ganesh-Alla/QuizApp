@@ -1,5 +1,5 @@
 
-const questions = [
+export  const Questions = [
     {
 		id: 1,
 		domain: '1. World History',
@@ -119,4 +119,3 @@ const questions = [
 	},
 ]
 
-export default questions;

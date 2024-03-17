@@ -9,7 +9,7 @@ export async function GET() {
 
     await connectDB();
      const session = await getSession();
-     const existingUser = await CCUser.findOne({email:session});
+    const existingUser = await CCUser.findOne({email:JSON.parse(session)[0]});
      if(!existingUser ){
          return NextResponse.json({message:"User Not Exists please login"},{status:500});
         }

@@ -98,7 +98,7 @@ const Register = () => {
                   'Thumbs up, great!',
           })
           }else{
-            await login(email);
+            await login( JSON.stringify([email,year]));
             console.log('Data Entered Successfull');
           }
         } else {

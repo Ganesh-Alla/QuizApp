@@ -12,7 +12,7 @@ export async function POST(request) {
         finalScore
        } = await request.json();
 
-     const existingUser = await CCUser.findOne({email:session});
+     const existingUser = await CCUser.findOne({email:JSON.parse(session)[0]});
      if(!existingUser ){
          return NextResponse.json({message:"User Not Exists please login"},{status:500});
         }

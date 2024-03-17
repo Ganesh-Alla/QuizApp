@@ -14,15 +14,16 @@ const QuestionCard = ({
 }) => {
 
 
+
     return (
-        <div className="flex justify-center">
-            <div className='w-full max-w-3xl p-4 bg-white border border-gray-200 rounded-md shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700'>
+        <div className="flex justify-center h-full select-none">
+            <div className='relative w-full  p-4 bg-white border border-gray-200 rounded-md shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700'>
                 <div className='flex items-center justify-between mb-2'>
-                    <h2 className='text-xl font-bold leading-none text-gray-900 dark:text-white'>
+                    <h2 className='text-xl font-bold leading-none text-gray-900'>
                     Question {index+1}
-                     {/* {question.id} */}
                      of {quizLength}
                     </h2>
+                    <button type="button" onClick={handleScoreQuiz} className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Submit</button>
                 </div>
                 <div className="flow-root">
                     <hr className=" border-gray-200 sm:mx-auto dark:border-gray-300" />
@@ -50,8 +51,7 @@ const QuestionCard = ({
 </Radio.Group>
                     </div>
                 </div>
-
-                <div className='flex justify-center pt-4'>
+                <div className='absolute bottom-0 right-0 flex justify-end items-end p-4'>
                      { index>0 &&<button
                             onClick={handlePrevQuestion}
                             type='button'
@@ -66,13 +66,13 @@ const QuestionCard = ({
                             >
                             Next
                             </button>}
-                            <button
+                            {/* <button
                             onClick={handleScoreQuiz}
                             type='button'
                             className='text-white bg-sky-700 hover:bg-sky-800 font-medium rounded-full text-sm px-5 py-2.5 mb-2 dark:bg-sky-600 dark:hover:bg-sky-700 focus:outline-none'
                             >
                             Submit
-                            </button>
+                            </button> */}
                 </div>
             </div>
         </div>

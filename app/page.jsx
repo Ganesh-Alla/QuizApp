@@ -14,10 +14,6 @@ const Home = async() => {
   const deadline = await getDeadline();
   const value = await getValue();
   const isSubmit = await getSubmit();
- console.log("session:",session)
- console.log("value:",value)
- console.log("deadline:",deadline)
- console.log("timeleft:",Date.now()- deadline)
 
 if(isSubmit){
 return(
@@ -30,13 +26,13 @@ return(
     return (
     <div className="w-full">
       <PopLogOut/>
-      <StartPage/>
+      <StartPage />
   </div>)
   }else if(session && value && session !== "Logged"){
     return (
     <div className="w-full">
     <PopLogOut/>
-   <QuizApp />
+   <QuizApp year={JSON.parse(session)[1]} />
   </div>)
   }
 
