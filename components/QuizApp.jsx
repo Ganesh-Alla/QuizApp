@@ -8,7 +8,6 @@ const QuestionCard = dynamic(() =>
         ssr: false,
     });
 import {Questions} from '@/utils/questionsData';
-
 import { setDeadline, setSubmit } from '@/app/api/route';
 import { disconnectDB } from '@/utils/db';
 import Loading from '@/app/loading';
@@ -18,16 +17,13 @@ const { Header, Content, Sider } = Layout;
 
 const QuizApp = ({year}) => {
 
+  const { token: { colorBgContainer, borderRadiusLG },} = theme.useToken();
 let questions;
-
 if(year == 3){
   questions= Questions;
 }else{
   questions = null
 }
-
-
-  const { token: { colorBgContainer, borderRadiusLG },} = theme.useToken();
 
   const [index,setIndex] = useState(0);
   const [QuestionsArray, setQuestionsArray] = useState(null);
@@ -35,8 +31,7 @@ if(year == 3){
   const [loading, setLoading] = useState(false);
   const [deadline, setdeadline] = useState(null);
   const [tabShiftCount, setTabShiftCount] = useState(0);
-
-
+  const [selected, setSelected] = useState(1);
 
   const [selectedAnswerID, setSelectedAnswerID] = useState(() => {
     if (typeof localStorage !== 'undefined') {
@@ -53,13 +48,8 @@ if(year == 3){
   }
   const answers = getAnswersArray();
 
-  const [selected, setSelected] = useState(1);
-
-
-
 
   useEffect(() => {
-
     function shuffleArray() {
       var array = [];
       for (var i = 0; i < questions.length; i++) {
@@ -91,10 +81,9 @@ if(year == 3){
   useEffect(() => {
     if (QuestionsArray && QuestionsArray.length > 0) {
       setCurrentQuestion(QuestionsArray[0]);
-
-      const fetchTime=async()=>{
+      const setTime=async()=>{
         try {
-          const response = await fetch('api/gettime',{
+          const response = await fetch('api/settime',{
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -104,7 +93,7 @@ if(year == 3){
         if (response.ok) {
             console.log("data",data);
             setdeadline(data.deadline.toString())
-             await setDeadline(data.deadline.toString());
+            setDeadline(data.deadline.toString());
         } else {
             console.error(data.message);
             console.log('Enter Failed');
@@ -117,7 +106,7 @@ if(year == 3){
           disconnectDB();
         }
       }
-      fetchTime();
+      setTime();
     }
   }, [QuestionsArray]);
 
@@ -181,8 +170,8 @@ const handleScoreQuiz = useCallback(async () => {
     });
     const data = await response.json();
     if (response.ok) {
-      await setSubmit("Submit");
       localStorage.clear()
+      await setSubmit("Submit");
     } else {
       console.error(data.message);
       console.log('Enter Failed');
@@ -215,10 +204,9 @@ useEffect(() => {
 }, [tabShiftCount, handleScoreQuiz]);
 
 
-if(loading){
+if(loading || !questions[currentQuestion] || !deadline){
   return <Loading/>
-}
-
+}else{
   return (
     <Layout>
       <div className='fixed w-full top-14 z-50'>
@@ -282,6 +270,6 @@ if(loading){
     </Layout>
   </Layout>
   )
-}
+}}
 
 export default QuizApp

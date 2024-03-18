@@ -1,48 +1,39 @@
-import BlueLinks from "@/components/BlueLinks"
-import { getSession,getDeadline, getStartTime, getSubmit, getValue } from '@/app/api/route'
+import BlueLinks from "@/components/BlueLinks";
+import { getSession,getSubmit, getValue } from '@/app/api/route';
 import StartPage from "@/components/StartPage";
 import QuizApp from "@/components/QuizApp";
 import PopLogOut from "@/components/PopLogOut";
 import Register from "@/components/Register";
 import LoginCode from "@/components/LoginCode";
 import Submit from "@/components/Submit";
-import Loading from "./loading";
 
-const Home = async() => {
-
-  const session =await  getSession();
-  const deadline = await getDeadline();
+const Home = async () => {
+  const session = await getSession();
   const value = await getValue();
   const isSubmit = await getSubmit();
 
-if(isSubmit){
-return(
-  <div className="w-full">
-    <PopLogOut/>
-    <Submit/></div>
-)
-}
-  else if(session && !value && session !== "Logged"){
+  if (isSubmit) {
     return (
-    <div className="w-full">
-      <PopLogOut/>
-      <StartPage />
-  </div>)
-  }else if(session && value && session !== "Logged"){
+      <div className="w-full">
+        <PopLogOut />
+        <Submit />
+      </div>
+    );
+  } else if (session && session !== "Logged") {
     return (
-    <div className="w-full">
-    <PopLogOut/>
-   <QuizApp year={JSON.parse(session)[1]} />
-  </div>)
+      <div className="w-full">
+        <PopLogOut />
+        {value ? <QuizApp year={JSON.parse(session)[1]} /> : <StartPage />}
+      </div>
+    );
+  } else {
+    return (
+      <div className="w-full">
+        <BlueLinks />
+        {session === "Logged" ? <Register /> : <LoginCode />}
+      </div>
+    );
   }
+};
 
-  return (
-    <div className="w-full">
-      <BlueLinks/>
-{session==="Logged" && <Register/>}
-{!session && <LoginCode/>}
-    </div>
-  )
-}
-
-export default Home
+export default Home;

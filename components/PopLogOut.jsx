@@ -17,7 +17,6 @@ const PopLogOut = () => {
           async onOk(){
             localStorage.clear();
             await logout();
-            // window.location.reload();
           },
           okButtonProps:{
             type:"default",

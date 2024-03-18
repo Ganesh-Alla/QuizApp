@@ -23,7 +23,6 @@ async function connectDB() {
     } catch (error) {
         console.log("DB Error");
     }
-
 }
 
 export default connectDB;
@@ -34,7 +33,6 @@ async function disconnectDB() {
       console.log("No active connections to disconnect.");
       return;
     }
-
     await Promise.all(
       mongoose.connections.map(async (connection) => {
         await connection.close();
@@ -46,7 +44,6 @@ async function disconnectDB() {
     console.log("Error disconnecting from MongoDB:", error);
   }
 }
-
 
 export { disconnectDB };
 

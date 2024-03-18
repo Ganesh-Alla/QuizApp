@@ -53,7 +53,7 @@ export async function POST(request) {
         console.log("DBE1",error);
         return NextResponse.json({message:"Creation Failed"},{status:500});
     }
-     return NextResponse.json({message:"Success"},{status:201});
+     return NextResponse.json({message:"Success",year:year},{status:201});
     } catch (error) {
         console.log("DBE",error)
         return NextResponse.json({message:"Failed"},{status:500});

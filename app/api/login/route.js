@@ -8,25 +8,22 @@ export async function POST(request) {
         email,
         phone,
        } = await request.json();
-
-     await connectDB();
-
-     const existingEmail = await CCUser.findOne({email});
-     const existingPhone = await CCUser.findOne({phone});
-
-      await disconnectDB();
-     if(!existingEmail){
-         return NextResponse.json({message:"No Email Found"},{status:500});
-        }
-    else if(!existingPhone){
+       await connectDB();
+       const existingUser = await CCUser.findOne({email});
+     if(!existingUser){
+       return NextResponse.json({message:"No Email Found"},{status:500});
+      }
+      else if(existingUser.phone !== phone){
         return NextResponse.json({message:"Incorect Phone"},{status:500});
-       }
-
-      if(existingEmail._id.toString() === existingPhone._id.toString()){
-          return NextResponse.json({message:"Success",result:existingEmail.result},{status:201});
+      }
+      if(existingUser.result !== null){
+        return NextResponse.json({message:"Success",result:"Completed"},{status:201});
+      }
+      else if(existingUser.session.deadline && Date.now() > existingUser.session.deadline){
+        return NextResponse.json({message:"Success",result:"Timeup"},{status:201});
       }
       else{
-        return NextResponse.json({message:"Auth Failed"},{status:500});
+        return NextResponse.json({message:"Success",result:existingUser.result,year:existingUser.year},{status:201});
       }
     } catch (error) {
         console.log("DBE",error)

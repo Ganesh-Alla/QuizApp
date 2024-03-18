@@ -1,12 +1,11 @@
 import CCUser from "@/modals/CCUser";
-import connectDB, { disconnectDB } from "@/utils/db";
+import connectDB from "@/utils/db";
 import { NextResponse } from "next/server";
-import {  getSession,  setDeadline } from "../route";
+import {  getSession } from "../route";
 
 
 export async function GET() {
    try{
-
     await connectDB();
      const session = await getSession();
     const existingUser = await CCUser.findOne({email:JSON.parse(session)[0]});
@@ -15,11 +14,10 @@ export async function GET() {
         }
       let deadline = existingUser.session.deadline;
       if (!deadline) {
-          deadline = Date.now() + 1000 * 20 ;
+          deadline = Date.now() + 1000 * 60+5 ;
           existingUser.session.deadline =deadline;
-          await existingUser.save();
+          existingUser.save();
         }
-    await disconnectDB();
      return NextResponse.json({message:"Successed",deadline},{status:201});
     } catch (error) {
         console.log("DataBaseE",error)

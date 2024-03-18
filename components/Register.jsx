@@ -87,18 +87,28 @@ const Register = () => {
         const data = await response.json();
         if (response.ok) {
           if(data.result){
+            if(data.result==="Timeup"){
+              Swal.fire({
+                title:'<b>Heyy! Your Exam Time is already Completed. </b>',
+                html: '',
+                focusConfirm: false,
+                showCloseButton: true,
+                confirmButtonText:'Okay',
+                confirmButtonAriaLabel:
+                    'Thumbs up, great!',
+            })}
+            else{
             Swal.fire({
-              title:'<strong>Heyy! Your Exam already COMPLETED. </strong>',
+              title:'<b>Heyy! Your Exam already COMPLETED. </b>',
               html: 'Results will be announce soon',
               focusConfirm: false,
               showCloseButton: true,
-              confirmButtonText:
-    ' Okay',
+              confirmButtonText:'Okay',
               confirmButtonAriaLabel:
                   'Thumbs up, great!',
-          })
+          })}
           }else{
-            await login( JSON.stringify([email,year]));
+            await login( JSON.stringify([email,data.year]));
             console.log('Data Entered Successfull');
           }
         } else {

@@ -25,14 +25,15 @@ const StartPage = () => {
   };
     const handleClick = async()=>{
       enterLoading(0)
-      try {
-        const response = await fetch('api/gettime',{
-          method: 'GET',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-      });
-      const data = await response.json();
+      // try {
+      //   const response = await fetch('api/settime',{
+      //     method: 'GET',
+      //     headers: {
+      //         'Content-Type': 'application/json',
+      //     },
+      // });
+      // const data = await response.json();
+      await setValue("value");
       setTimeout(() => {
         setLoadings((prevLoadings) => {
           const newLoadings = [...prevLoadings];
@@ -40,18 +41,17 @@ const StartPage = () => {
           return newLoadings;
         });
       }, 6000);
-      if (response.ok) {
-          console.log("data",data);
-           await setValue("value");
-      } else {
-          console.error(data.message);
-          console.log('Enter Failed');
-      }
-      console.log('Message from server:', data.message);
-      } catch (error) {
+      // if (response.ok) {
+      //     console.log("data",data);
+      // } else {
+      //     console.error(data.message);
+      //     console.log('Enter Failed');
+      // }
+      // console.log('Message from server:', data.message);
+      // } catch (error) {
 
-        console.error('Error:', error);
-      }
+      //   console.error('Error:', error);
+      // }
     };
 
   return (

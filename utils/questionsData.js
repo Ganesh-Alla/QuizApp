@@ -2,8 +2,8 @@
 export  const Questions = [
     {
 		id: 1,
-		domain: '1. World History',
 		questionText: 'Who painted the ceiling of the Sistine Chapel?',
+		code:"",
 		answerOptions: [
 			{ answerID: 'a', answerText: 'Da Vinci'},
 			{ answerID: 'b', answerText: 'Correggio'},
@@ -11,7 +11,6 @@ export  const Questions = [
 			{ answerID: 'd', answerText: 'Raphael'},
 		],
 		correctResponse: 'c',
-		questionRationale: `Michelangelo painted the chapel's ceiling between 1508 and 1512 under the patronage of Pope Julius II.`,
 	},
 	{
 		id: 2,
