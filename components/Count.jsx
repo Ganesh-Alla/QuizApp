@@ -22,7 +22,6 @@ const CountdownTimer = ({ deadline,handleScoreQuiz ,setLoading}) => {
           confirmButtonAriaLabel:
               'Thumbs up, great!',
       }).then(()=>{
-        setLoading(true)
         handleScoreQuiz();
       })
       } else {

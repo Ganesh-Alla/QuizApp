@@ -62,7 +62,7 @@ const StartPage = () => {
         <ul class="list-disc">
         <Space direction="vertical" style={{ width: '100%' }}>
  <li><strong>Number of Questions:</strong> The quiz comprises a total of 45 questions.</li>
-<li><strong>Scoring:</strong> Each question carries one mark. Ensure to answer each question carefully.</li>
+<li><strong>Scoring:</strong> Each question carries one mark. No Negative Marking. Ensure to answer each question carefully.</li>
 <li><strong>Exam Duration:</strong>The total duration of the quiz is 1 hour. Please manage your time efficiently.</li>
 <li><strong>Question Selection:</strong> Questions will be tailored to your academic year, ensuring relevance and suitability.</li>
 <li><strong>Qualification Criteria:</strong> Students must achieve the cutoff score to qualify for the next round.</li>

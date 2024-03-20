@@ -103,6 +103,7 @@ if(year == 1){
             console.log("data",data);
             setdeadline(data.deadline.toString());
             setDeadline(data.deadline.toString());
+            setLoading(true);
         } else {
             console.error(data.message);
             console.log('Enter Failed');
