@@ -3,7 +3,9 @@ import React, { useState } from 'react';
 import { SmileOutlined } from '@ant-design/icons';
 import { Button, Result,Rate } from 'antd';
 import { logout } from '@/app/api/route';
-const Submit = () => {
+import moment from 'moment';
+
+const Submit = ({isSubmit}) => {
   const [loadings, setLoadings] = useState([]);
   const enterLoading = (index) => {
     setLoadings((prevLoadings) => {
@@ -22,6 +24,8 @@ const Submit = () => {
 
 const [rate,setRate]  =  useState(0);
 const [feedback,setFeedback]  =  useState("");
+
+// console.log("time:",moment().hour())
 
 const handleSubmit= async()=>{
   enterLoading(0);
@@ -50,17 +54,17 @@ console.log('Message from server:', data.message);
 }
 }
   return (
-    <div className='w-full flex flex-col justify-center items-center'>
+    <div className='w-full flex flex-col justify-center items-center '>
     <Result
     icon={<SmileOutlined />}
     style={{
       padding:"30px 0px 0px 0px",
     }}
-    title="Great, we have submitted your anwsers!"
-    extra={<div className="max-w-xl mx-auto flex w-full flex-col border rounded-lg bg-white p-6">
-    <h2 className="title-font mb-1 text-lg font-medium text-gray-900">Feedback</h2>
-    <p className="mb-2 leading-relaxed text-gray-600">If you had any issues or you liked our event, please share
-        with us!
+    title={isSubmit?"Exam Finished due to tab shifts":"Great, we have submitted your anwsers!"}
+    extra={
+    <div className="max-w-xl mx-auto flex w-full flex-col border rounded-lg bg-lime-50 p-6">
+    <h2 className="title-font mb-1 text-lg font-medium text-gray-900 ">Feedback</h2>
+    <p className="mb-2 leading-relaxed text-gray-600">If you had any issues or you liked our event, please share with us!
     </p>
     <div className="mb-4">
 <Rate style={{

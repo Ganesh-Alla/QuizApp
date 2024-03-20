@@ -197,7 +197,6 @@ useEffect(() => {
   const handleVisibilityChange = () => {
     if (document.visibilityState === 'hidden' && tabShiftCount < 3) {
       if (tabShiftCount === 2) {
-        alert("Exam Finished due to tab shifts exceeding the limit");
         handleScoreQuiz();
       } else {
         setTabShiftCount(prevCount => {

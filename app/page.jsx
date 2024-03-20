@@ -1,3 +1,4 @@
+
 import BlueLinks from "@/components/BlueLinks";
 import { getSession,getSubmit, getValue } from '@/app/api/route';
 import StartPage from "@/components/StartPage";
@@ -17,7 +18,7 @@ const Home = async () => {
     return (
       <div className="w-full">
         <PopLogOut />
-        <Submit />
+        <Submit isSubmit={isSubmit}/>
       </div>
     );
   } else if (session && session !== "Logged") {

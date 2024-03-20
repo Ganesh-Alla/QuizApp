@@ -2,7 +2,6 @@ import CCUser from "@/modals/CCUser";
 import connectDB from "@/utils/db";
 import { NextResponse } from "next/server";
 import {  getSession } from "../route";
-import { Mongoose } from "mongoose";
 
 
 export async function GET() {
@@ -14,6 +13,20 @@ export async function GET() {
      if(!existingUser ){
          return NextResponse.json({message:"User Not Exists please login"},{status:500});
         }
+        const response = await fetch('https://www.timeapi.io/api/Time/current/zone?timeZone=Asia/Kolkata',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (response.ok) {
+            console.log("data",data);
+        } else {
+            console.error(data.message);
+            console.log('Enter Failed');
+        }
+        console.log('Message from server:', data.message);
       let deadline = existingUser.session.deadline;
       if (!deadline) {
           deadline = Date.now() + 1000 * 60 * 60 +5 ;
