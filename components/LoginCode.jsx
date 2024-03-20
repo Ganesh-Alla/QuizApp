@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useState } from 'react';
+import React, {  useRef, useState } from 'react';
 import { LockFilled } from '@ant-design/icons';
 import { Input,Space, Card ,message,Button,Form} from 'antd';
 import { login } from '@/app/api/route';
@@ -50,7 +50,6 @@ const error = () => {
     content: 'Please Enter Valid Pass Code',
   });
 };
-
 
    return(
      <div className='h-full flex justify-center items-center'>

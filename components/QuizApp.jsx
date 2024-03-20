@@ -47,7 +47,15 @@ if(year == 1){
     }
     return [];
   }
+
+  const getReviewArray = () => {
+    if (typeof localStorage !== 'undefined') {
+      return JSON.parse(localStorage.getItem('reviews')) || [];
+    }
+    return [];
+  }
   const answers = getAnswersArray();
+  const reviews = getReviewArray();
 
 
   useEffect(() => {
@@ -111,15 +119,17 @@ if(year == 1){
     }
   }, [QuestionsArray]);
 
-  console.log("answers",answers)
-  console.log("Current",currentQuestion)
 
   const handleAnswerOptionClick = (selectedAnswerID) => {
     localStorage.setItem(`question_${questions[currentQuestion].id}`, selectedAnswerID);
     answers.push(index+1);
-    console.log(index+1);
     localStorage.setItem("answers",JSON.stringify(answers));
     setSelectedAnswerID(selectedAnswerID);
+};
+  const handleReviewQuestion = () => {
+    reviews.push(index+1);
+    console.log("index",index+1);
+    localStorage.setItem("reviews",JSON.stringify(reviews));
 };
 
 const handleNextQuestion = () => {
@@ -210,7 +220,7 @@ if(loading || !questions[currentQuestion] || !deadline){
 }else{
   return (
     <Layout>
-      <div className='fixed w-full top-14 z-50'>
+      <div className='fixed w-full top-20 z-50'>
     <Header
       style={{
         display: 'flex',
@@ -227,7 +237,7 @@ if(loading || !questions[currentQuestion] || !deadline){
     </div>
     <Layout
     style={{
-      marginTop:56
+      marginTop:76
     }}
     >
       <Sider
@@ -238,7 +248,7 @@ if(loading || !questions[currentQuestion] || !deadline){
       >
         <div className='flex flex-wrap gap-1 h-[82vh] overflow-y-auto'>
          {QuestionsArray && answers && QuestionsArray.map((num, index) => (
-       <Badge key={index} num={index+1} selected={selected} answers={answers} handleQuestion={handleQuestion}/>
+       <Badge key={index} num={index+1} selected={selected} answers={answers} reviews={reviews} handleQuestion={handleQuestion}/>
       ))}</div>
       </Sider>
       <Layout
@@ -263,6 +273,7 @@ if(loading || !questions[currentQuestion] || !deadline){
                     handleAnswerOptionClick={handleAnswerOptionClick}
                     handleNextQuestion={handleNextQuestion}
                     handlePrevQuestion={handlePrevQuestion}
+                    handleReviewQuestion={handleReviewQuestion}
                     handleScoreQuiz={handleScoreQuiz}
                     />
                 }
