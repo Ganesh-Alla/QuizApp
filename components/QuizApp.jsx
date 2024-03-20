@@ -29,7 +29,7 @@ if(year == 1){
   const [index,setIndex] = useState(0);
   const [QuestionsArray, setQuestionsArray] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [deadline, setdeadline] = useState(null);
   const [tabShiftCount, setTabShiftCount] = useState(0);
   const [selected, setSelected] = useState(1);
@@ -103,7 +103,7 @@ if(year == 1){
             console.log("data",data);
             setdeadline(data.deadline.toString());
             setDeadline(data.deadline.toString());
-            setLoading(true);
+            setLoading(false);
         } else {
             console.error(data.message);
             console.log('Enter Failed');
