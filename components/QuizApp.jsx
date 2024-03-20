@@ -1,6 +1,6 @@
 "use client"
 import React, {  useCallback, useEffect, useRef, useState } from 'react';
-import { Layout,theme,notification} from 'antd';
+import { Layout,theme} from 'antd';
 import Count from './Count';
 import dynamic from 'next/dynamic';
 const QuestionCard = dynamic(() =>
@@ -101,7 +101,7 @@ if(year == 1){
         const data = await response.json();
         if (response.ok) {
             console.log("data",data);
-            setdeadline(data.deadline.toString())
+            setdeadline(data.deadline.toString());
             setDeadline(data.deadline.toString());
         } else {
             console.error(data.message);
@@ -215,7 +215,7 @@ useEffect(() => {
 }, [tabShiftCount, handleScoreQuiz]);
 
 
-if(loading || !questions[currentQuestion] || !deadline){
+if(loading || !questions[currentQuestion] ){
   return <Loading/>
 }else{
   return (
