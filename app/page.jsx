@@ -12,6 +12,7 @@ const Home = async () => {
   const value = await getValue();
   const isSubmit = await getSubmit();
 
+
   if (isSubmit) {
     return (
       <div className="w-full">

@@ -7,7 +7,8 @@ const QuestionCard = dynamic(() =>
     import('@/components/QuestionCard'), {
         ssr: false,
     });
-import {Questions} from '@/utils/questionsData';
+import { FirstYear } from '@/utils/FirstYear';
+import { SecondYear } from '@/utils/SecondYear';
 import { setDeadline, setSubmit } from '@/app/api/route';
 import { disconnectDB } from '@/utils/db';
 import Loading from '@/app/loading';
@@ -19,10 +20,10 @@ const QuizApp = ({year}) => {
 
   const { token: { colorBgContainer, borderRadiusLG },} = theme.useToken();
 let questions;
-if(year == 3){
-  questions= Questions;
+if(year == 1){
+  questions= FirstYear;
 }else{
-  questions = null
+  questions = SecondYear;
 }
 
   const [index,setIndex] = useState(0);
@@ -217,7 +218,7 @@ if(loading || !questions[currentQuestion] || !deadline){
       }}
     >
       <div className='flex justify-between text-white w-full'>
-      <div >QUIZ TIME</div>
+      <h1 className='font-bold'>QUIZ TIME</h1>
       <div className='flex items-center'>
     {deadline &&  <Count deadline={deadline} setLoading={setLoading} handleScoreQuiz={handleScoreQuiz} />}
         </div>
@@ -230,12 +231,12 @@ if(loading || !questions[currentQuestion] || !deadline){
     }}
     >
       <Sider
-        width={250}
+        width={300}
         style={{
           background: colorBgContainer,
         }}
       >
-        <div className='flex flex-wrap gap-1'>
+        <div className='flex flex-wrap gap-1 h-[82vh] overflow-y-auto'>
          {QuestionsArray && answers && QuestionsArray.map((num, index) => (
        <Badge key={index} num={index+1} selected={selected} answers={answers} handleQuestion={handleQuestion}/>
       ))}</div>

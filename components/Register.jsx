@@ -12,7 +12,8 @@ import {
     Divider,
     message
   } from 'antd';
-import { disconnectDB } from '@/utils/db';
+import code from '@/app/code.png';
+import Image from 'next/image';
 
 
 
@@ -122,7 +123,7 @@ const Register = () => {
             return newLoadings;
           });
         }, 1000);
-        console.log('Message from server:', data.message);
+        // console.log('Message from server:', data.message);
     } catch (error) {
         console.error('Error:', error);
     }
@@ -133,11 +134,12 @@ const Register = () => {
 
   return (
   <div className="flex flex-col items-center justify-center px-6 h-full py-0">
-      <div className="w-full bg-white rounded-lg shadow dark:border mt-0 max-w-lg p-0 dark:bg-gray-800 dark:border-gray-700">
+      <div className="w-full bg-white rounded-lg shadow  mt-0 max-w-lg p-0">
           <div className="space-y-6 p-8">
-              <h1 className="font-bold text-center leading-tight tracking-tight text-gray-900 text-2xl dark:text-white">
-                  Code Combat Register
-              </h1>
+          <div className="flex items-center justify-center space-x-2 rtl:space-x-reverse w-full">
+    <Image src={code} alt="alt" width={30} height={30} />
+    <span className="font-bold text-center leading-tight tracking-tight text-gray-900 text-2xl">{islogin?"Login":"Register"}</span>
+    </div>
               <Form
       form={form}
       name="register"
@@ -252,14 +254,6 @@ placeholder="Select Year"
         value: '2',
         label: '2',
       },
-      {
-        value: '3',
-        label: '3',
-      },
-      {
-        value: '4',
-        label: '4',
-      },
     ]}
   />
 </Form.Item>
@@ -320,7 +314,7 @@ placeholder="Select Year"
   >
       <Form.Item
         name="college"
-        label="College-Address"
+        label="Clg Name & Address"
         rules={[
           {
             required: true,
@@ -328,7 +322,7 @@ placeholder="Select Year"
           },
         ]}
       >
-    <Input placeholder="College Name - Address" prefix={<UserOutlined />} />
+    <Input placeholder="College Name - College Address" prefix={<UserOutlined />} />
     </Form.Item>
     </Space>
     </>}

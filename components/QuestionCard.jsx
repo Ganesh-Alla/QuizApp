@@ -3,6 +3,7 @@ import React from 'react';
 import { Radio, Space } from 'antd'
 import { FloatButton,Modal } from 'antd';
 import {  LogoutOutlined,ExclamationCircleOutlined } from '@ant-design/icons'
+import Image from 'next/image' 
 
 const QuestionCard = ({
     quizLength,
@@ -36,22 +37,26 @@ const QuestionCard = ({
 
 
     return (
-      <div className="flex justify-center h-full select-none">
-            <div className='relative w-full  p-4 bg-white border border-gray-200 rounded-md shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700'>
+      <div className="flex justify-center h-[72vh] select-none">
+            <div className='relative w-full  p-4 bg-slate-50 border border-gray-200 rounded-md shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700'>
                 <div className='flex items-center justify-between mb-2'>
                     <h2 className='text-xl font-bold leading-none text-gray-900'>
-                    Question {index+1}
-                     of {quizLength}
+                    Question {index+1} of {quizLength}
                     </h2>
           {contextHolder}
                     <button type="button" onClick={confirm} className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Submit</button>
                 </div>
-                <div className="flow-root">
+                <div className="flow-root h-[90%] overflow-x-auto">
                     <hr className=" border-gray-200 sm:mx-auto dark:border-gray-300" />
                     <div className='px-4'>
-                        <p className="my-6 font-thin text-lg text-black">
+                        <p className="my-6 font-bold text-lg text-black">
                           {question.questionText}
                           </p>
+                          {question.code && (
+                          <pre className="my-6 font-thin text-md text-black w-full">
+                            <code>{question.code}</code>
+                           </pre>)}
+                         { question.img && <Image src={question.img} alt="alt" width={200} height={200} />}
                         <hr className="mb-2 border-gray-200 sm:mx-auto dark:border-gray-300 lg:mb-2" />
                         <Radio.Group onChange={(e) => handleAnswerOptionClick(e.target.value)} value={selectedAnswerID}>
   <Space direction="vertical">
