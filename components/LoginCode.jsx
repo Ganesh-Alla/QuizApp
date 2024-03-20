@@ -26,7 +26,7 @@ const LoginCode = () => {
 
   const onFinish = async (values) => {
       try {
-          if (values.logincode === "Nipuna2K24") {
+          if (values.logincode === "ISTENipuna") {
               enterLoading(0);
               await login("Logged");
           } else {
