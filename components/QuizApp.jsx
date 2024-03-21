@@ -137,6 +137,7 @@ if(year == 1){
     reviews.push(index+1);
     console.log("index",index+1);
     localStorage.setItem("reviews",JSON.stringify(reviews));
+    handleNextQuestion();
 };
 
 const handleNextQuestion = () => {
