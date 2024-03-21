@@ -218,9 +218,9 @@ useEffect(() => {
 }, [tabShiftCount, handleScoreQuiz]);
 
 
-// if(!questions[currentQuestion] ){
-//   return <Loading/>
-// }else{
+if(!questions[currentQuestion] ){
+  return <Loading/>
+}else{
   return (
     <Layout>
       <div className='fixed w-full top-20 z-50'>
@@ -285,7 +285,7 @@ useEffect(() => {
     </Layout>
   </Layout>
   )
-}
+}}
 
 
 export default QuizApp
