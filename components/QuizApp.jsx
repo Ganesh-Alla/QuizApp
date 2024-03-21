@@ -103,7 +103,6 @@ if(year == 1){
         });
         const data = await response.json();
         if (response.ok) {
-            // console.log("data",data);
             setdeadline(data.deadline.toString());
             setDeadline(data.deadline.toString());
         } else {
@@ -219,9 +218,9 @@ useEffect(() => {
 }, [tabShiftCount, handleScoreQuiz]);
 
 
-if(!questions[currentQuestion] ){
-  return <Loading/>
-}else{
+// if(!questions[currentQuestion] ){
+//   return <Loading/>
+// }else{
   return (
     <Layout>
       <div className='fixed w-full top-20 z-50'>
@@ -286,6 +285,7 @@ if(!questions[currentQuestion] ){
     </Layout>
   </Layout>
   )
-}}
+}
+
 
 export default QuizApp
