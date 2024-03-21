@@ -114,13 +114,15 @@ if(year == 1){
           console.error('Error:', error);
         }
         finally{
-          setLoading(false);
+          if(loading){
+setLoading(false)
+          }
           disconnectDB();
         }
       }
       setTime();
     }
-  }, [QuestionsArray]);
+  }, [QuestionsArray,loading]);
 
 
   const handleAnswerOptionClick = (selectedAnswerID) => {
@@ -218,7 +220,7 @@ useEffect(() => {
 }, [tabShiftCount, handleScoreQuiz]);
 
 
-if(!questions[currentQuestion] ){
+if(loading ){
   return <Loading/>
 }else{
   return (
