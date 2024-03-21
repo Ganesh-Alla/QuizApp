@@ -9,7 +9,7 @@ const QuestionCard = dynamic(() =>
     });
 import { FirstYear } from '@/utils/FirstYear';
 import { SecondYear } from '@/utils/SecondYear';
-import { getTime, setDeadline, setSubmit } from '@/app/api/route';
+import {  setDeadline, setSubmit } from '@/app/api/route';
 import { disconnectDB } from '@/utils/db';
 import Loading from '@/app/loading';
 import Badge from './Badge';
@@ -115,8 +115,8 @@ if(year == 1){
           console.error('Error:', error);
         }
         finally{
-          disconnectDB();
           setLoading(false);
+          disconnectDB();
         }
       }
       setTime();
@@ -219,7 +219,7 @@ useEffect(() => {
 }, [tabShiftCount, handleScoreQuiz]);
 
 
-if(loading || !questions[currentQuestion] ){
+if(loading  ){
   return <Loading/>
 }else{
   return (
