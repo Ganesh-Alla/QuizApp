@@ -26,7 +26,7 @@ export async function GET() {
             const { year, month, day, hour, minute, seconds, milliSeconds } = data;
             if (!deadline) {
                 const date = new Date(year, month - 1, day, hour, minute, seconds, milliSeconds);
-                deadline = date.getTime() + 1000 * 60 * 60 +5 ;
+                deadline = Date.now() + 1000 * 60 * 60 + 5 ;
                 existingUser.session.deadline =deadline;
                 existingUser.save();
             }

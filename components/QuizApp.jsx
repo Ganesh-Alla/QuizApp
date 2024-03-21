@@ -219,7 +219,7 @@ useEffect(() => {
 }, [tabShiftCount, handleScoreQuiz]);
 
 
-if(loading  ){
+if(!questions[currentQuestion] ){
   return <Loading/>
 }else{
   return (
