@@ -53,3 +53,24 @@ export async function getDeadline() {
   if(!deadline) return null
   return decrypt(deadline)
 }
+export async function getTime() {
+  try{
+    const response = await fetch('https://www.timeapi.io/api/Time/current/zone?timeZone=Asia/Kolkata',{
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await response.json();
+        if (response.ok) {
+          const { year, month, day, hour, minute, seconds, milliSeconds } = data;
+          const date = new Date(year, month - 1, day, hour, minute, seconds, milliSeconds).getTime();
+            // console.log("data",data);
+            // console.log("Timein ms",date)
+          return date
+        }
+  }
+  catch(error){
+    console.log(error)
+  }
+}

@@ -59,7 +59,7 @@ const StartPage = () => {
           </Space>
         }
       >
-        <ul class="list-disc">
+        <ul className="list-disc">
         <Space direction="vertical" style={{ width: '100%' }}>
  <li><strong>Number of Questions:</strong> The quiz comprises a total of 45 questions.</li>
 <li><strong>Scoring:</strong> Each question carries one mark. No Negative Marking. Ensure to answer each question carefully.</li>

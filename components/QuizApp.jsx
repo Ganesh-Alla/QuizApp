@@ -9,14 +9,14 @@ const QuestionCard = dynamic(() =>
     });
 import { FirstYear } from '@/utils/FirstYear';
 import { SecondYear } from '@/utils/SecondYear';
-import { setDeadline, setSubmit } from '@/app/api/route';
+import { getTime, setDeadline, setSubmit } from '@/app/api/route';
 import { disconnectDB } from '@/utils/db';
 import Loading from '@/app/loading';
 import Badge from './Badge';
 
 const { Header, Content, Sider } = Layout;
 
-const QuizApp = ({year}) => {
+const QuizApp = ({year,date}) => {
 
   const { token: { colorBgContainer, borderRadiusLG },} = theme.useToken();
 let questions;
@@ -26,6 +26,9 @@ if(year == 1){
   questions = SecondYear;
 }
 
+
+
+// console.log("date",date)
   const [index,setIndex] = useState(0);
   const [QuestionsArray, setQuestionsArray] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(null);
@@ -81,7 +84,7 @@ if(year == 1){
       } else {
         const shuffledArray = shuffleArray();
         localStorage.setItem('questions', JSON.stringify(shuffledArray));
-        console.log("second")
+        // console.log("second")
       }
     }
   }, [questions.length]);
@@ -100,10 +103,9 @@ if(year == 1){
         });
         const data = await response.json();
         if (response.ok) {
-            console.log("data",data);
+            // console.log("data",data);
             setdeadline(data.deadline.toString());
             setDeadline(data.deadline.toString());
-            setLoading(false);
         } else {
             console.error(data.message);
             console.log('Enter Failed');
@@ -114,6 +116,7 @@ if(year == 1){
         }
         finally{
           disconnectDB();
+          setLoading(false);
         }
       }
       setTime();
@@ -163,6 +166,7 @@ const handleQuestion = (index) => {
 };
 
 const handleScoreQuiz = useCallback(async () => {
+  setLoading(true);
   let finalScore = 0;
   questions.forEach((question) => {
     const storedAnswer = localStorage.getItem(`question_${question.id}`);
@@ -230,7 +234,7 @@ if(loading || !questions[currentQuestion] ){
       <div className='flex justify-between text-white w-full'>
       <h1 className='font-bold'>QUIZ TIME</h1>
       <div className='flex items-center'>
-    {deadline &&  <Count deadline={deadline} setLoading={setLoading} handleScoreQuiz={handleScoreQuiz} />}
+    {deadline &&  <Count deadline={deadline} date={date} setLoading={setLoading} handleScoreQuiz={handleScoreQuiz} />}
         </div>
   </div>
     </Header>

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { SmileOutlined } from '@ant-design/icons';
 import { Button, Result,Rate } from 'antd';
-import { logout } from '@/app/api/route';
+import { getTime, logout } from '@/app/api/route';
 import moment from 'moment';
 
 const Submit = ({isSubmit}) => {
@@ -53,6 +53,8 @@ console.log('Message from server:', data.message);
   console.error('Error:', error);
 }
 }
+
+
   return (
     <div className='w-full flex flex-col justify-center items-center '>
     <Result

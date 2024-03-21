@@ -1,10 +1,14 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 import Swal from 'sweetalert2'
+import { getTime } from '@/app/api/route';
 
-const calculateTimeLeft = (deadline) => (deadline - Date.now()) / 1000;
+const calculateTimeLeft = (deadline,date) => (deadline - Date.now()) / 1000;
 
-const CountdownTimer = ({ deadline,handleScoreQuiz ,setLoading}) => {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline));
+const CountdownTimer =({ deadline,date,handleScoreQuiz}) => {
+
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(deadline,date));
+
 
   useEffect(() => {
     if(timeLeft>0){
@@ -33,7 +37,7 @@ const CountdownTimer = ({ deadline,handleScoreQuiz ,setLoading}) => {
     else{
       setTimeLeft(0);
     }
-  }, [deadline,timeLeft,handleScoreQuiz,setLoading]);
+  }, [deadline,timeLeft,handleScoreQuiz]);
 
   const formatTime = (time) => String(Math.floor(time)).padStart(2, '0');
 

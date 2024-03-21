@@ -291,16 +291,52 @@ placeholder="Select Year"
       ]}
     options={[
       {
+        value: 'AIDS',
+        label: 'AIDS',
+      },
+      {
+        value: 'AIML',
+        label: 'AIML',
+      },
+      {
         value: 'CSE',
-        label: 'Computer Science And Engineering',
+        label: 'CSE',
+      },
+      {
+        value: 'CSBS',
+        label: 'CSBS',
+      },
+      {
+        value: 'CSD',
+        label: 'CSD',
+      },
+      {
+        value: 'CIC',
+        label: 'CIC',
+      },
+      {
+        value: 'CSIT',
+        label: 'CSIT',
       },
       {
         value: 'IT',
-        label: 'Information Technology',
+        label: 'IT',
       },
       {
         value: 'ECE',
-        label: 'Electronics and Communication Engineering',
+        label: 'ECE',
+      },
+      {
+        value: 'EEE',
+        label: 'EEE',
+      },
+      {
+        value: 'MECH',
+        label: 'MECH',
+      },
+      {
+        value: 'CIVIL',
+        label: 'CIVIL',
       },
     ]}
   /></Form.Item>

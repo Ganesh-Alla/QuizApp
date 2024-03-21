@@ -1,6 +1,6 @@
 
 import BlueLinks from "@/components/BlueLinks";
-import { getSession,getSubmit, getValue } from '@/app/api/route';
+import { getSession,getSubmit, getTime, getValue } from '@/app/api/route';
 import StartPage from "@/components/StartPage";
 import QuizApp from "@/components/QuizApp";
 import PopLogOut from "@/components/PopLogOut";
@@ -12,6 +12,7 @@ const Home = async () => {
   const session = await getSession();
   const value = await getValue();
   const isSubmit = await getSubmit();
+  const date = await getTime();
 
 
   if (isSubmit) {
@@ -25,7 +26,7 @@ const Home = async () => {
     return (
       <div className="w-full">
         <PopLogOut />
-        {value ? <QuizApp year={JSON.parse(session)[1]} /> : <StartPage />}
+        {value ? <QuizApp year={JSON.parse(session)[1]} date={date} /> : <StartPage />}
       </div>
     );
   } else {
