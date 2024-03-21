@@ -5,7 +5,7 @@ import { Button, Result,Rate } from 'antd';
 import { getTime, logout } from '@/app/api/route';
 import moment from 'moment';
 
-const Submit = ({isSubmit}) => {
+const Submit = () => {
   const [loadings, setLoadings] = useState([]);
   const enterLoading = (index) => {
     setLoadings((prevLoadings) => {
@@ -62,7 +62,7 @@ console.log('Message from server:', data.message);
     style={{
       padding:"30px 0px 0px 0px",
     }}
-    title={isSubmit?"Exam Finished due to tab shifts":"Great, we have submitted your anwsers!"}
+    title="Exam Finished!"
     extra={
     <div className="max-w-xl mx-auto flex w-full flex-col border rounded-lg bg-lime-50 p-6">
     <h2 className="title-font mb-1 text-lg font-medium text-gray-900 ">Feedback</h2>

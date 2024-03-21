@@ -246,7 +246,7 @@ int main()
 	},
     {
         id: 15,
-        questionText: '15.	Find the output of the following program.',
+        questionText: 'Find the output of the following program.',
         code:
 `main(){
     int a = 10, b, c;
@@ -283,7 +283,7 @@ result.extend(i for i in list3 if i not in (list1+list2) and i not in result)`,
 	},
     {
 		id: 17,
-		questionText: '17.	What will be the output of the following Python expression?',
+		questionText: 'What will be the output of the following Python expression?',
         code:
         `
 round(4.576)

@@ -133,15 +133,34 @@ if(year == 1){
     localStorage.setItem("answers",JSON.stringify(answers));
     setSelectedAnswerID(selectedAnswerID);
 };
-  const handleReviewQuestion = () => {
-    reviews.push(index+1);
-    console.log("index",index+1);
-    localStorage.setItem("reviews",JSON.stringify(reviews));
-    handleNextQuestion();
+const handleReviewQuestion = () => {
+  handleNextQuestion();
+  const indexToAdd = index + 1;
+
+  // Check if index+1 already exists in reviews
+  const indexToRemove = reviews.indexOf(indexToAdd);
+  if (indexToRemove !== -1) {
+      // If it exists, remove it
+      reviews.splice(indexToRemove, 1);
+      console.log("Removed index", indexToAdd);
+  } else {
+      // If it doesn't exist, add it
+      reviews.push(indexToAdd);
+      console.log("Added index", indexToAdd);
+  }
+
+  localStorage.setItem("reviews", JSON.stringify(reviews));
 };
+
 
 const handleNextQuestion = () => {
   if (index < questions.length-1) {
+    const indexToRemove = reviews.indexOf(index+1);
+  if (indexToRemove !== -1) {
+      // If it exists, remove it
+      reviews.splice(indexToRemove, 1);
+      localStorage.setItem("reviews", JSON.stringify(reviews));
+  }
     setIndex(index+1);
     setSelected(prevValue => prevValue + 1);
     const nextQuestion = QuestionsArray[index+1];
@@ -277,6 +296,7 @@ if(loading ){
                     quizLength={questions.length}
                     question={questions[currentQuestion]}
                     index={index}
+                    reviews={reviews}
                     selectedAnswerID={selectedAnswerID}
                     handleAnswerOptionClick={handleAnswerOptionClick}
                     handleNextQuestion={handleNextQuestion}
