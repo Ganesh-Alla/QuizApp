@@ -33,6 +33,7 @@ if(year == 1){
   const [QuestionsArray, setQuestionsArray] = useState(null);
   const [currentQuestion, setCurrentQuestion] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [Sloading, setSLoading] = useState(false);
   const [deadline, setdeadline] = useState(null);
   const [tabShiftCount, setTabShiftCount] = useState(0);
   const [selected, setSelected] = useState(1);
@@ -189,7 +190,7 @@ const handleQuestion = (index) => {
 };
 
 const handleScoreQuiz = useCallback(async () => {
-  setLoading(true);
+  setSLoading(true);
   let finalScore = 0;
   questions.forEach((question) => {
     const storedAnswer = localStorage.getItem(`question_${question.id}`);
@@ -242,7 +243,7 @@ useEffect(() => {
 }, [tabShiftCount, handleScoreQuiz]);
 
 
-if(loading ){
+if(loading || Sloading){
   return <Loading/>
 }else{
   return (
