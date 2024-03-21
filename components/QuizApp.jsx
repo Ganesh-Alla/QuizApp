@@ -115,12 +115,14 @@ if(year == 1){
         }
         finally{
           if(loading){
-setLoading(false)
+            setLoading(false)
           }
           disconnectDB();
         }
       }
-      setTime();
+      if(loading){
+        setTime();
+      }
     }
   }, [QuestionsArray,loading]);
 
@@ -288,6 +290,5 @@ if(loading ){
   </Layout>
   )
 }}
-
 
 export default QuizApp

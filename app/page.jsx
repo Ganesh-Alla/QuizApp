@@ -20,8 +20,7 @@ const Home = async () => {
       <div className="w-full">
         <PopLogOut />
         <Submit isSubmit={isSubmit}/>
-      </div>
-    );
+      </div>);
   } else if (session && session !== "Logged") {
     return (
       <div className="w-full">
