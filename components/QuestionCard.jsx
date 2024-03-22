@@ -26,7 +26,6 @@ const QuestionCard = ({
       okText: 'Confirm',
       cancelText: 'Cancel',
       async onOk(){
-        localStorage.clear();
         handleScoreQuiz();
       },
       okButtonProps:{
